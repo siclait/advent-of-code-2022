@@ -28,8 +28,8 @@ export function parseInput(input: string): Inventory[] {
   return inventories
 }
 
-function nLargest(inventories: Inventory[], n: number): Inventory[] {
-  const elements = inventories.sort((a, b) => b.totalCalories - a.totalCalories)
+export function nLargest<T>(items: T[], comparator: (a: T, b: T) => number, n: number): T[] {
+  const elements = [...items].sort(comparator)
   const result = []
   for (let i = 0; i < n; i++) {
     if (i >= elements.length) break
@@ -38,12 +38,16 @@ function nLargest(inventories: Inventory[], n: number): Inventory[] {
   return result
 }
 
+function nLargestInventories(inventories: Inventory[], n: number): Inventory[] {
+  return nLargest(inventories, (a, b) => b.totalCalories - a.totalCalories, n)
+}
+
 export function mostCalories(inventories: Inventory[]): number {
-  return sum(...nLargest(inventories, 1).map((inventory) => inventory.totalCalories))
+  return sum(...nLargestInventories(inventories, 1).map((inventory) => inventory.totalCalories))
 }
 
 export function totalTopThreeCalories(inventories: Inventory[]): number {
-  return sum(...nLargest(inventories, 3).map((inventory) => inventory.totalCalories))
+  return sum(...nLargestInventories(inventories, 3).map((inventory) => inventory.totalCalories))
 }
 
 function sum(...values: number[]): number {
