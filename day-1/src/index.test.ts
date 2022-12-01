@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises"
 
-import { mostCalories, parseInput } from "./index"
+import { mostCalories, parseInput, totalTopThreeCalories } from "./index"
 
 const expectedInventories = [
   {
@@ -35,4 +35,16 @@ test("calculates most calories for input", async () => {
   const contents = await readFile("./resources/input.txt")
   const input = parseInput(contents.toString())
   expect(mostCalories(input)).toEqual(71_300)
+})
+
+test("calculates total calories for top three inventories of sample", async () => {
+  const contents = await readFile("./resources/sample.txt")
+  const input = parseInput(contents.toString())
+  expect(totalTopThreeCalories(input)).toEqual(45_000)
+})
+
+test("calculates total calories for top three inventories of input", async () => {
+  const contents = await readFile("./resources/input.txt")
+  const input = parseInput(contents.toString())
+  expect(totalTopThreeCalories(input)).toEqual(209_691)
 })

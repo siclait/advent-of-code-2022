@@ -2,16 +2,16 @@ class Inventory {
   meals: Meal[] = []
 
   addMeal(calories: number) {
-    this.meals.push(new Meal(calories))
+    this.meals.push({ calories })
   }
 
   get totalCalories(): number {
-    return this.meals.reduce((total, meal) => total + meal.calories, 0)
+    return sum(...this.meals.map((meal) => meal.calories))
   }
 }
 
-class Meal {
-  constructor(readonly calories: number) {}
+interface Meal {
+  readonly calories: number
 }
 
 export function parseInput(input: string): Inventory[] {
@@ -28,6 +28,24 @@ export function parseInput(input: string): Inventory[] {
   return inventories
 }
 
+function nLargest(inventories: Inventory[], n: number): Inventory[] {
+  const elements = inventories.sort((a, b) => b.totalCalories - a.totalCalories)
+  const result = []
+  for (let i = 0; i < n; i++) {
+    if (i >= elements.length) break
+    result.push(elements[i])
+  }
+  return result
+}
+
 export function mostCalories(inventories: Inventory[]): number {
-  return Math.max(...inventories.map((inventory) => inventory.totalCalories))
+  return sum(...nLargest(inventories, 1).map((inventory) => inventory.totalCalories))
+}
+
+export function totalTopThreeCalories(inventories: Inventory[]): number {
+  return sum(...nLargest(inventories, 3).map((inventory) => inventory.totalCalories))
+}
+
+function sum(...values: number[]): number {
+  return values.reduce((total, x) => total + x)
 }
