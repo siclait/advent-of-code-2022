@@ -88,57 +88,39 @@ function computeScore(opponentPlay: Play, responsePlay: Play): number {
 }
 
 function computeOutcome(opponentPlay: Play, responsePlay: Play): Outcome {
-  if (opponentPlay === Play.Rock) {
-    if (responsePlay === Play.Rock) {
-      return Outcome.Draw
-    } else if (responsePlay === Play.Scissors) {
-      return Outcome.Lose
-    } else {
-      return Outcome.Win
-    }
-  } else if (opponentPlay === Play.Scissors) {
-    if (responsePlay === Play.Rock) {
-      return Outcome.Win
-    } else if (responsePlay === Play.Scissors) {
-      return Outcome.Draw
-    } else {
-      return Outcome.Lose
-    }
+  const [opponentBeats, responseBeats] = [beats(opponentPlay), beats(responsePlay)]
+
+  if (responsePlay === opponentBeats) {
+    return Outcome.Lose
+  } else if (opponentPlay === responseBeats) {
+    return Outcome.Win
   } else {
-    if (responsePlay === Play.Rock) {
-      return Outcome.Lose
-    } else if (responsePlay === Play.Scissors) {
-      return Outcome.Win
-    } else {
-      return Outcome.Draw
-    }
+    return Outcome.Draw
+  }
+}
+
+function beats(play: Play): Play {
+  switch (play) {
+    case Play.Rock:
+      return Play.Scissors
+    case Play.Paper:
+      return Play.Rock
+    case Play.Scissors:
+      return Play.Paper
   }
 }
 
 function playForOutcome(opponentPlay: Play, desiredOutcome: Outcome): Play {
-  if (opponentPlay === Play.Rock) {
-    if (desiredOutcome === Outcome.Win) {
-      return Play.Paper
-    } else if (desiredOutcome === Outcome.Lose) {
-      return Play.Scissors
-    } else {
-      return Play.Rock
-    }
-  } else if (opponentPlay === Play.Scissors) {
-    if (desiredOutcome === Outcome.Win) {
-      return Play.Rock
-    } else if (desiredOutcome === Outcome.Lose) {
-      return Play.Paper
-    } else {
-      return Play.Scissors
-    }
+  const opponentBeats = beats(opponentPlay)
+
+  if (desiredOutcome === Outcome.Lose) {
+    return opponentBeats
+  } else if (desiredOutcome === Outcome.Draw) {
+    return opponentPlay
   } else {
-    if (desiredOutcome === Outcome.Win) {
-      return Play.Scissors
-    } else if (desiredOutcome === Outcome.Lose) {
-      return Play.Rock
-    } else {
-      return Play.Paper
-    }
+    const plays = new Set([Play.Rock, Play.Scissors, Play.Paper])
+    plays.delete(opponentBeats)
+    plays.delete(opponentPlay)
+    return Array.from(plays)[0]
   }
 }
