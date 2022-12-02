@@ -25,7 +25,7 @@ const ROUND_SCORES = {
 export function totalScoreFirstStrategy(input: string): number {
   let score = 0
   for (const [opponentValue, responseValue] of parseInput(input)) {
-    score += computeScore(opponentPlay(opponentValue), responsePlay(responseValue))
+    score += computeScore(ABC_PLAYS[opponentValue], XYZ_PLAYS[responseValue])
   }
   return score
 }
@@ -33,54 +33,48 @@ export function totalScoreFirstStrategy(input: string): number {
 export function totalScoreSecondStrategy(input: string): number {
   let score = 0
   for (const [opponentValue, outcomeValue] of parseInput(input)) {
-    const play = opponentPlay(opponentValue)
-    score += computeScore(play, playForOutcome(play, outcome(outcomeValue)))
+    const play = ABC_PLAYS[opponentValue]
+    score += computeScore(play, playForOutcome(play, XYZ_OUTCOMES[outcomeValue]))
   }
   return score
 }
 
-function* parseInput(input: string): Generator<[string, string], void, undefined> {
+type ABC = "A" | "B" | "C"
+type XYZ = "X" | "Y" | "Z"
+
+export function* parseInput(input: string): Generator<[ABC, XYZ], void, undefined> {
   for (const value of input.split("\n")) {
     if (value === "") break
     const [x, y] = value.split(" ")
+    if (!isABC(x) || !isXYZ(y)) throw new Error("Invalid input")
     yield [x, y]
   }
 }
 
-export function outcome(value: string): Outcome {
-  if (value === "X") {
-    return Outcome.Lose
-  } else if (value === "Y") {
-    return Outcome.Draw
-  } else if (value === "Z") {
-    return Outcome.Win
-  } else {
-    throw new Error("Invalid outcome string")
-  }
+function isABC(value: string): value is ABC {
+  return ["A", "B", "C"].includes(value)
 }
 
-export function opponentPlay(value: string): Play {
-  if (value === "A") {
-    return Play.Rock
-  } else if (value === "B") {
-    return Play.Paper
-  } else if (value === "C") {
-    return Play.Scissors
-  } else {
-    throw new Error("Invalid play for opponent")
-  }
+function isXYZ(value: string): value is XYZ {
+  return ["X", "Y", "Z"].includes(value)
 }
 
-export function responsePlay(value: string): Play {
-  if (value === "X") {
-    return Play.Rock
-  } else if (value === "Y") {
-    return Play.Paper
-  } else if (value === "Z") {
-    return Play.Scissors
-  } else {
-    throw new Error("Invalid play in response")
-  }
+const XYZ_OUTCOMES: Record<XYZ, Outcome> = {
+  X: Outcome.Lose,
+  Y: Outcome.Draw,
+  Z: Outcome.Win,
+}
+
+const ABC_PLAYS: Record<ABC, Play> = {
+  A: Play.Rock,
+  B: Play.Paper,
+  C: Play.Scissors,
+}
+
+const XYZ_PLAYS: Record<XYZ, Play> = {
+  X: Play.Rock,
+  Y: Play.Paper,
+  Z: Play.Scissors,
 }
 
 function computeScore(opponentPlay: Play, responsePlay: Play): number {
@@ -99,17 +93,6 @@ function computeOutcome(opponentPlay: Play, responsePlay: Play): Outcome {
   }
 }
 
-function beats(play: Play): Play {
-  switch (play) {
-    case Play.Rock:
-      return Play.Scissors
-    case Play.Paper:
-      return Play.Rock
-    case Play.Scissors:
-      return Play.Paper
-  }
-}
-
 function playForOutcome(opponentPlay: Play, desiredOutcome: Outcome): Play {
   const opponentBeats = beats(opponentPlay)
 
@@ -122,5 +105,16 @@ function playForOutcome(opponentPlay: Play, desiredOutcome: Outcome): Play {
     plays.delete(opponentBeats)
     plays.delete(opponentPlay)
     return Array.from(plays)[0]
+  }
+}
+
+function beats(play: Play): Play {
+  switch (play) {
+    case Play.Rock:
+      return Play.Scissors
+    case Play.Paper:
+      return Play.Rock
+    case Play.Scissors:
+      return Play.Paper
   }
 }

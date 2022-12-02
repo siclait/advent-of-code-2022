@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises"
 
-import { opponentPlay, outcome, responsePlay, totalScoreFirstStrategy, totalScoreSecondStrategy } from "./index"
+import { parseInput, totalScoreFirstStrategy, totalScoreSecondStrategy } from "./index"
 
 describe("totalScoreFirstStrategy", () => {
   test("reads the sample file", async () => {
@@ -26,14 +26,12 @@ describe("totalScoreSecondStrategy", () => {
   })
 })
 
-test("outcome throws exception on bad input", () => {
-  expect(() => outcome("W")).toThrowError()
-})
-
-test("opponentPlay throws exception on bad input", () => {
-  expect(() => opponentPlay("W")).toThrowError()
-})
-
-test("responsePlay throws exception on bad input", () => {
-  expect(() => responsePlay("W")).toThrowError()
+describe("parseInput", () => {
+  test("throws error on invalid input", () => {
+    expect(() => {
+      for (const _ of parseInput("A X\nD Y\n")) {
+        /* empty */
+      }
+    }).toThrowError()
+  })
 })
