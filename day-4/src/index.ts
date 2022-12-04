@@ -23,7 +23,6 @@ function isFullyContainedPair(line: string): boolean {
 
 function isOverlappingPair(line: string): boolean {
   const [assignment1, assignment2] = line.split(",").map((pair) => new SectionAssignment(...splitPair(pair)))
-  console.log(`1: ${assignment1}, 2: ${assignment2}, overlaps: ${assignment1.overlaps(assignment2)}`)
   return assignment1.overlaps(assignment2)
 }
 
