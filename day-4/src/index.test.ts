@@ -1,5 +1,3 @@
-// import { readFile } from "node:fs/promises"
-
 import { readFile } from "node:fs/promises"
 
 import { fullyContainedPairs, overlappingPairs, SectionAssignment } from "./index"
