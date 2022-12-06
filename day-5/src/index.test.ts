@@ -8,7 +8,7 @@ import {
   BoardParser,
   CraneMover9000,
   topCrates,
-  topCrates9001,
+  CraneMover9001,
 } from "./index"
 
 test("correctly prints individual stack", () => {
@@ -119,10 +119,10 @@ test(`top crates for input is "ZBDRNPMVH"`, async () => {
 
 test(`top crates (CrateMover9001) for sample is "MCD"`, async () => {
   const contents = await readFile("./resources/sample.txt")
-  expect(topCrates9001(contents.toString())).toBe("MCD")
+  expect(topCrates(contents.toString(), new CraneMover9001())).toBe("MCD")
 })
 
 test(`top crates (CrateMover9001) for input is "WDLPFNNNB"`, async () => {
   const contents = await readFile("./resources/input.txt")
-  expect(topCrates9001(contents.toString())).toBe("WDLPFNNNB")
+  expect(topCrates(contents.toString(), new CraneMover9001())).toBe("WDLPFNNNB")
 })

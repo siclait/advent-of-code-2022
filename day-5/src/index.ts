@@ -252,12 +252,11 @@ export class InstructionParser {
 
 type Stage = "board" | "instructions"
 
-export function topCrates(input: string): string {
+export function topCrates(input: string, crane = new CraneMover9000()): string {
   let stage: Stage = "board"
 
   const boardParser = new BoardParser()
   let board = new Board()
-  const crane = new CraneMover9000()
 
   for (const line of readLines(input)) {
     if (line.length === 0) {
@@ -288,36 +287,4 @@ function readLines(input: string): string[] {
   const lines = input.split("\n")
   lines.pop()
   return lines
-}
-
-export function topCrates9001(input: string): string {
-  let stage: Stage = "board"
-
-  const boardParser = new BoardParser()
-  let board = new Board()
-  const crane = new CraneMover9001()
-
-  for (const line of readLines(input)) {
-    if (line.length === 0) {
-      stage = "instructions"
-      continue
-    }
-
-    switch (stage) {
-      case "board":
-        board = boardParser.parse(line)
-        break
-      case "instructions":
-        crane.addInstruction(line)
-        break
-    }
-  }
-
-  crane.execute(board)
-
-  let output = ""
-  for (let i = 0; i < board.length; i++) {
-    output += board.at(i).peek()
-  }
-  return output
 }
