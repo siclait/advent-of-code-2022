@@ -148,7 +148,7 @@ interface Instruction {
   end: number
 }
 
-export class CraneMover9000 {
+export class CrateMover900 {
   instructions: Instruction[] = []
 
   addInstruction(input: string): void {
@@ -170,7 +170,7 @@ export class CraneMover9000 {
   }
 }
 
-export class CraneMover9001 {
+export class CrateMover9001 {
   instructions: Instruction[] = []
 
   addInstruction(input: string): void {
@@ -252,7 +252,7 @@ export class InstructionParser {
 
 type Stage = "board" | "instructions"
 
-export function topCrates(input: string, crane = new CraneMover9000()): string {
+export function topCrates(input: string, crane = new CrateMover900()): string {
   let stage: Stage = "board"
 
   const boardParser = new BoardParser()

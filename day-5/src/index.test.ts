@@ -6,9 +6,9 @@ import {
   InstructionParser,
   Stack,
   BoardParser,
-  CraneMover9000,
+  CrateMover900,
   topCrates,
-  CraneMover9001,
+  CrateMover9001,
 } from "./index"
 
 test("correctly prints individual stack", () => {
@@ -73,7 +73,7 @@ test(`correctly parses a board`, () => {
 })
 
 test("correctly executes a single instruction", () => {
-  const crane = new CraneMover9000()
+  const crane = new CrateMover900()
   crane.addInstruction("move 1 from 2 to 1")
 
   const boardBefore = new Board()
@@ -119,10 +119,10 @@ test(`top crates for input is "ZBDRNPMVH"`, async () => {
 
 test(`top crates (CrateMover9001) for sample is "MCD"`, async () => {
   const contents = await readFile("./resources/sample.txt")
-  expect(topCrates(contents.toString(), new CraneMover9001())).toBe("MCD")
+  expect(topCrates(contents.toString(), new CrateMover9001())).toBe("MCD")
 })
 
 test(`top crates (CrateMover9001) for input is "WDLPFNNNB"`, async () => {
   const contents = await readFile("./resources/input.txt")
-  expect(topCrates(contents.toString(), new CraneMover9001())).toBe("WDLPFNNNB")
+  expect(topCrates(contents.toString(), new CrateMover9001())).toBe("WDLPFNNNB")
 })
