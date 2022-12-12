@@ -123,3 +123,36 @@ export function countVisible(input: string): number {
 
   return count
 }
+
+export function maxScenicScore(input: string): number {
+  const grid = readGrid(input)
+  return Math.max(...grid.cells.flatMap((row, i) => row.map((_, j) => scenicScore(i, j, grid))))
+}
+
+export function scenicScore(row: number, col: number, grid: Grid): number {
+  let northDistance = 0
+  for (let i = row - 1; i >= 0; i--) {
+    northDistance++
+    if (grid.cells[i][col] >= grid.cells[row][col]) break
+  }
+
+  let westDistance = 0
+  for (let i = col - 1; i >= 0; i--) {
+    westDistance++
+    if (grid.cells[row][i] >= grid.cells[row][col]) break
+  }
+
+  let eastDistance = 0
+  for (let i = col + 1; i < grid.cells[0].length; i++) {
+    eastDistance++
+    if (grid.cells[row][i] >= grid.cells[row][col]) break
+  }
+
+  let southDistance = 0
+  for (let i = row + 1; i < grid.cells.length; i++) {
+    southDistance++
+    if (grid.cells[i][col] >= grid.cells[row][col]) break
+  }
+
+  return northDistance * westDistance * eastDistance * southDistance
+}

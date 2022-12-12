@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises"
-import { countVisible, isVisible, readGrid, computeVisibility } from "./index"
+import { countVisible, isVisible, readGrid, computeVisibility, maxScenicScore, scenicScore } from "./index"
 
 test("reads in grid from sample.txt", async () => {
   const contents = await readFile("./resources/sample.txt")
@@ -135,4 +135,28 @@ test("counts visible trees in sample.txt", async () => {
 test("counts visible trees in input.txt", async () => {
   const contents = await readFile("./resources/input.txt")
   expect(countVisible(contents.toString())).toBe(1_809)
+})
+
+test("computes scenic score at (1,2) in sample.txt", async () => {
+  const contents = await readFile("./resources/sample.txt")
+  const grid = readGrid(contents.toString())
+
+  expect(scenicScore(1, 2, grid)).toBe(4)
+})
+
+test("computes scenic score at (3,2) in sample.txt", async () => {
+  const contents = await readFile("./resources/sample.txt")
+  const grid = readGrid(contents.toString())
+
+  expect(scenicScore(3, 2, grid)).toBe(8)
+})
+
+test("computes max scenic score in sample.txt", async () => {
+  const contents = await readFile("./resources/sample.txt")
+  expect(maxScenicScore(contents.toString())).toBe(8)
+})
+
+test("computes max scenic score in input.txt", async () => {
+  const contents = await readFile("./resources/input.txt")
+  expect(maxScenicScore(contents.toString())).toBe(479_400)
 })
