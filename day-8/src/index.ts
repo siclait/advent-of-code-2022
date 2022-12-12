@@ -1,6 +1,3 @@
-// N^2 solution: Check row and column (2N) for each entry (N) = 2N^2
-// N solution: Calculate left, right, top, and bottom visibility (4N)
-
 interface Grid {
   cells: number[][]
 }
